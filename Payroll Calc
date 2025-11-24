@@ -1,0 +1,57 @@
+STANDARD_HOURS = 40
+OVERTIME_RATE = 1.5
+TAX_RATE = 0.20
+HEALTH_DEDUCTION = 50
+
+# calculate gross pay
+def calc_gross(hours, rate):
+    if hours <= STANDARD_HOURS:
+        gross = hours * rate
+    else:
+        regular = STANDARD_HOURS * rate
+        overtime = (hours - STANDARD_HOURS) * rate * OVERTIME_RATE
+        gross = regular + overtime
+    return round(gross, 2)
+
+# calculate deductions
+def calc_deductions(gross):
+    tax = round(gross * TAX_RATE, 2)
+    total = round(tax + HEALTH_DEDUCTION, 2)
+    return tax, HEALTH_DEDUCTION, total
+
+# calculate net pay
+def calc_net(gross, total_deductions):
+    return round(gross - total_deductions, 2)
+
+# simple payroll print
+def print_payroll(emp_id, emp_name, rate, hours):
+    gross = calc_gross(hours, rate)
+    tax, health, total_deductions = calc_deductions(gross)
+    net = calc_net(gross, total_deductions)
+
+    print("========================================")
+    print("PAYROLL REPORT")
+    print("ID =", emp_id)
+    print("Name =", emp_name)
+    print("----------------------------------------")
+    print("Rate =", rate)
+    print("Hours =", hours)
+    print("Gross Pay =", gross)
+    print("----------------------------------------")
+    print("Deductions:")
+    print(" Tax =", tax)
+    print(" Health =", health)
+    print(" Total Deductions =", total_deductions)
+    print("----------------------------------------")
+    print("Net Pay =", net)
+    print("========================================")
+
+# employee data stored in parallel lists
+ids =    [1001, 1002, 1003]
+names =  ["Ram Kumar", "Rajendra Chauhan", "Sajid Ali"]
+rates =  [25.0, 40.0, 15.0]
+hours =  [35.5, 45.0, 50.0]
+
+# loop to print each employee's payroll
+for i in range(len(ids)):
+    print_payroll(ids[i], names[i], rates[i], hours[i])
